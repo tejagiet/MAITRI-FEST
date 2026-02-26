@@ -58,8 +58,8 @@ export default function MaitriRegistration() {
         const e = {}
         if (!formData.name.trim()) e.name = 'Full name is required'
         if (!formData.pin.trim()) e.pin = 'PIN number is required'
-        else if (!/^[A-Z0-9a-z]{5,20}$/.test(formData.pin.trim()))
-            e.pin = 'PIN must be 5–20 alphanumeric characters'
+        else if (!/^[A-Z0-9a-z\-]{5,20}$/.test(formData.pin.trim()))
+            e.pin = 'PIN must be 5–20 alphanumeric characters or hyphens'
         if (!formData.mobile.trim()) e.mobile = 'Mobile number is required'
         else if (!/^[6-9]\d{9}$/.test(formData.mobile.trim()))
             e.mobile = 'Enter a valid 10-digit Indian mobile number'
