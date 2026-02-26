@@ -221,7 +221,7 @@ export default function MaitriRegistration() {
                                     type="text"
                                     className="input-field"
                                     style={{ paddingLeft: '2.6rem' }}
-                                    placeholder="e.g. Ravi Kumar"
+                                    placeholder="Enter Your Name"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                     disabled={status === 'loading'}
@@ -244,7 +244,7 @@ export default function MaitriRegistration() {
                                     type="text"
                                     className="input-field"
                                     style={{ paddingLeft: '2.6rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}
-                                    placeholder="e.g. 22L61A0501"
+                                    placeholder="Enter Your Pin Number"
                                     value={formData.pin}
                                     onChange={(e) => setFormData({ ...formData, pin: e.target.value })}
                                     disabled={status === 'loading'}
@@ -267,7 +267,7 @@ export default function MaitriRegistration() {
                                     type="tel"
                                     className="input-field"
                                     style={{ paddingLeft: '2.6rem' }}
-                                    placeholder="10-digit mobile number"
+                                    placeholder="Enter Your Mobile Number"
                                     maxLength={10}
                                     value={formData.mobile}
                                     onChange={(e) => setFormData({ ...formData, mobile: e.target.value.replace(/\D/, '') })}
