@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ggu-purple: #3B0764;
+  --color-ggu-purple-light: #581c87;
+  --color-ggu-purple-dark: #2e0550;
+  --color-ggu-gold: #D97706;
+  --color-ggu-gold-light: #F59E0B;
+  --color-ggu-gold-dark: #B45309;
+  --font-family-sans: 'Inter', sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(217,119,6,0.4); }
+  50%       { box-shadow: 0 0 40px rgba(217,119,6,0.8); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #D97706 0%,
+    #F59E0B 30%,
+    #FDE68A 50%,
+    #F59E0B 70%,
+    #D97706 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.875rem 1.125rem;
+  border-radius: 0.625rem;
+  border: 1.5px solid rgba(91, 33, 182, 0.25);
+  background: rgba(255,255,255,0.96);
+  font-size: 0.9375rem;
+  font-family: 'Inter', sans-serif;
+  color: #1e1b4b;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-field:focus {
+  border-color: #7C3AED;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18);
+}
+
+.input-field::placeholder {
+  color: #a0a0b8;
+}
