@@ -202,7 +202,7 @@ export default function MaitriRegistration() {
                             background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.4)',
                             borderRadius: '0.625rem', padding: '0.875rem 1rem', marginBottom: '1.25rem',
                         }}>
-                            <p style={{ color: '#FCA5A5', fontSize: '0.875rem', margin: 0 }}>⚠️ {errorMsg}</p>
+                            <p style={{ color: '#FCA5A5', fontSize: '0.875rem', margin: 0 }}> {errorMsg}</p>
                         </div>
                     )}
 
@@ -221,7 +221,7 @@ export default function MaitriRegistration() {
                                     type="text"
                                     className="input-field"
                                     style={{ paddingLeft: '2.6rem' }}
-                                    placeholder="e.g. Ravi Kumar"
+                                    placeholder="Enter Your Full Name"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                     disabled={status === 'loading'}
@@ -244,7 +244,7 @@ export default function MaitriRegistration() {
                                     type="text"
                                     className="input-field"
                                     style={{ paddingLeft: '2.6rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}
-                                    placeholder="e.g. 22L61A0501"
+                                    placeholder="Enter Your Pin Number"
                                     value={formData.pin}
                                     onChange={(e) => setFormData({ ...formData, pin: e.target.value })}
                                     disabled={status === 'loading'}
@@ -267,7 +267,7 @@ export default function MaitriRegistration() {
                                     type="tel"
                                     className="input-field"
                                     style={{ paddingLeft: '2.6rem' }}
-                                    placeholder="10-digit mobile number"
+                                    placeholder="Enter Your mobile number"
                                     maxLength={10}
                                     value={formData.mobile}
                                     onChange={(e) => setFormData({ ...formData, mobile: e.target.value.replace(/\D/, '') })}
@@ -314,7 +314,7 @@ export default function MaitriRegistration() {
                                     Registering…
                                 </>
                             ) : (
-                                '🎟️ Register & Get Pass'
+                                'Register & Get Pass'
                             )}
                         </button>
                     </form>
@@ -339,7 +339,7 @@ export default function MaitriRegistration() {
                     </div>
 
                     <h2 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem' }}>
-                        Registration Successful! 🎉
+                        Registration Successful! 
                     </h2>
                     <p style={{ color: 'rgba(255,255,255,0.55)', marginBottom: '1.75rem' }}>
                         Your Entry Pass for Maitri 2026 is ready
@@ -417,7 +417,7 @@ export default function MaitriRegistration() {
                                 zIndex: 1
                             }}>
                                 <p style={{ fontSize: '0.65rem', fontWeight: 600, color: '#D1D5DB', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 0.2rem' }}>
-                                    Participant
+                                    Student
                                 </p>
                                 <p style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', margin: '0 0 0.85rem', letterSpacing: '0.02em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
                                     {formData.name.toUpperCase()}
@@ -522,7 +522,7 @@ export default function MaitriRegistration() {
 
             {/* Footer */}
             <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.72rem', marginTop: '2rem', marginBottom: 0, textAlign: 'center' }}>
-                © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College
+                © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College • 24295-AI-038
             </p>
 
             {/* Spinner keyframe */}
@@ -532,3 +532,4 @@ export default function MaitriRegistration() {
         </div>
     )
 }
+
