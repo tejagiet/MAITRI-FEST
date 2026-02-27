@@ -38,6 +38,12 @@ const IconDownload = () => (
     </svg>
 )
 
+const IconBuilding = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 21h18" /><path d="M9 8h1" /><path d="M9 12h1" /><path d="M9 16h1" /><path d="M14 8h1" /><path d="M14 12h1" /><path d="M14 16h1" /><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16" />
+    </svg>
+)
+
 const IconCheck = () => (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="20 6 9 17 4 12" />
@@ -46,7 +52,7 @@ const IconCheck = () => (
 
 /* ─── component ─── */
 export default function MaitriRegistration() {
-    const [formData, setFormData] = useState({ name: '', pin: '', mobile: '' })
+    const [formData, setFormData] = useState({ name: '', pin: '', mobile: '', college: 'ggu_students' })
     const [errors, setErrors] = useState({})
     const [status, setStatus] = useState('idle') // idle | loading | success | error
     const [errorMsg, setErrorMsg] = useState('')
@@ -99,7 +105,9 @@ export default function MaitriRegistration() {
         setErrors({})
         setStatus('loading')
 
-        const { error } = await supabase.from('maitri_registrations').insert([{
+        const targetTable = formData.college;
+
+        const { error } = await supabase.from(targetTable).insert([{
             full_name: formData.name.trim(),
             pin_number: formData.pin.trim().toUpperCase(),
             mobile_number: formData.mobile.trim(),
@@ -120,7 +128,7 @@ export default function MaitriRegistration() {
     }
 
     const handleReset = () => {
-        setFormData({ name: '', pin: '', mobile: '' })
+        setFormData({ name: '', pin: '', mobile: '', college: 'ggu_students' })
         setErrors({})
         setStatus('idle')
         setErrorMsg('')
@@ -202,7 +210,7 @@ export default function MaitriRegistration() {
                             background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.4)',
                             borderRadius: '0.625rem', padding: '0.875rem 1rem', marginBottom: '1.25rem',
                         }}>
-                            <p style={{ color: '#FCA5A5', fontSize: '0.875rem', margin: 0 }}> {errorMsg}</p>
+                            <p style={{ color: '#FCA5A5', fontSize: '0.875rem', margin: 0 }}>⚠️ {errorMsg}</p>
                         </div>
                     )}
 
@@ -221,13 +229,42 @@ export default function MaitriRegistration() {
                                     type="text"
                                     className="input-field"
                                     style={{ paddingLeft: '2.6rem' }}
-                                    placeholder="Enter Your Full Name"
+                                    placeholder="e.g. Ravi Kumar"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                     disabled={status === 'loading'}
                                 />
                             </div>
                             {errors.name && <p style={{ color: '#FCA5A5', fontSize: '0.78rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.name}</p>}
+                        </div>
+
+                        {/* College Selection */}
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.825rem', fontWeight: 500, marginBottom: '0.4rem' }}>
+                                College / Institution
+                            </label>
+                            <div style={{ position: 'relative' }}>
+                                <span style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#7C3AED' }}>
+                                    <IconBuilding />
+                                </span>
+                                <select
+                                    className="input-field"
+                                    style={{ paddingLeft: '2.6rem', cursor: 'pointer', appearance: 'none' }}
+                                    value={formData.college}
+                                    onChange={(e) => setFormData({ ...formData, college: e.target.value })}
+                                    disabled={status === 'loading'}
+                                >
+                                    <option value="ggu_students">Godavari Global University (GGU)</option>
+                                    <option value="giet_engineering">GIET Engineering College</option>
+                                    <option value="giet_pharmacy">GIET Pharmacy</option>
+                                    <option value="giet_degree">GIET Degree College</option>
+                                    <option value="giet_polytechnic">GIET Polytechnic</option>
+                                </select>
+                                {/* Custom arrow for select */}
+                                <span style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#7C3AED', pointerEvents: 'none' }}>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </span>
+                            </div>
                         </div>
 
                         {/* PIN */}
@@ -244,7 +281,7 @@ export default function MaitriRegistration() {
                                     type="text"
                                     className="input-field"
                                     style={{ paddingLeft: '2.6rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}
-                                    placeholder="Enter Your Pin Number"
+                                    placeholder="e.g. 22L61A0501"
                                     value={formData.pin}
                                     onChange={(e) => setFormData({ ...formData, pin: e.target.value })}
                                     disabled={status === 'loading'}
@@ -267,7 +304,7 @@ export default function MaitriRegistration() {
                                     type="tel"
                                     className="input-field"
                                     style={{ paddingLeft: '2.6rem' }}
-                                    placeholder="Enter Your mobile number"
+                                    placeholder="10-digit mobile number"
                                     maxLength={10}
                                     value={formData.mobile}
                                     onChange={(e) => setFormData({ ...formData, mobile: e.target.value.replace(/\D/, '') })}
@@ -314,7 +351,7 @@ export default function MaitriRegistration() {
                                     Registering…
                                 </>
                             ) : (
-                                'Register & Get Pass'
+                                '🎟️ Register & Get Pass'
                             )}
                         </button>
                     </form>
@@ -339,7 +376,7 @@ export default function MaitriRegistration() {
                     </div>
 
                     <h2 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem' }}>
-                        Registration Successful! 
+                        Registration Successful! 🎉
                     </h2>
                     <p style={{ color: 'rgba(255,255,255,0.55)', marginBottom: '1.75rem' }}>
                         Your Entry Pass for Maitri 2026 is ready
@@ -417,7 +454,7 @@ export default function MaitriRegistration() {
                                 zIndex: 1
                             }}>
                                 <p style={{ fontSize: '0.65rem', fontWeight: 600, color: '#D1D5DB', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 0.2rem' }}>
-                                    Student
+                                    Participant
                                 </p>
                                 <p style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', margin: '0 0 0.85rem', letterSpacing: '0.02em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
                                     {formData.name.toUpperCase()}
@@ -522,7 +559,7 @@ export default function MaitriRegistration() {
 
             {/* Footer */}
             <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.72rem', marginTop: '2rem', marginBottom: 0, textAlign: 'center' }}>
-                © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College • 24295-AI-038
+                © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College
             </p>
 
             {/* Spinner keyframe */}
@@ -532,4 +569,3 @@ export default function MaitriRegistration() {
         </div>
     )
 }
-
