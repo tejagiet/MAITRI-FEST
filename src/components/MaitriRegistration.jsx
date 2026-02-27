@@ -229,7 +229,7 @@ export default function MaitriRegistration() {
                                     type="text"
                                     className="input-field"
                                     style={{ paddingLeft: '2.6rem' }}
-                                    placeholder="Enter Your Name"
+                                    placeholder="e.g. Ravi Kumar"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                     disabled={status === 'loading'}
@@ -281,7 +281,7 @@ export default function MaitriRegistration() {
                                     type="text"
                                     className="input-field"
                                     style={{ paddingLeft: '2.6rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}
-                                    placeholder="Enter Your Pin Number"
+                                    placeholder="e.g. 22L61A0501"
                                     value={formData.pin}
                                     onChange={(e) => setFormData({ ...formData, pin: e.target.value })}
                                     disabled={status === 'loading'}
@@ -304,7 +304,7 @@ export default function MaitriRegistration() {
                                     type="tel"
                                     className="input-field"
                                     style={{ paddingLeft: '2.6rem' }}
-                                    placeholder="Enter Your Mobile Number"
+                                    placeholder="10-digit mobile number"
                                     maxLength={10}
                                     value={formData.mobile}
                                     onChange={(e) => setFormData({ ...formData, mobile: e.target.value.replace(/\D/, '') })}
@@ -351,7 +351,7 @@ export default function MaitriRegistration() {
                                     Registering…
                                 </>
                             ) : (
-                                ' Register & Get Pass'
+                                '🎟️ Register & Get Pass'
                             )}
                         </button>
                     </form>
@@ -376,7 +376,7 @@ export default function MaitriRegistration() {
                     </div>
 
                     <h2 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem' }}>
-                        Registration Successful! 
+                        Registration Successful! 🎉
                     </h2>
                     <p style={{ color: 'rgba(255,255,255,0.55)', marginBottom: '1.75rem' }}>
                         Your Entry Pass for Maitri 2026 is ready
@@ -559,7 +559,7 @@ export default function MaitriRegistration() {
 
             {/* Footer */}
             <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.72rem', marginTop: '2rem', marginBottom: 0, textAlign: 'center' }}>
-                © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College • 24295-AI-038
+                © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College
             </p>
 
             {/* Spinner keyframe */}

@@ -263,7 +263,7 @@ export default function VipRegistration() {
                             background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)',
                             borderRadius: '0.5rem', padding: '0.75rem 1rem', marginBottom: '1.5rem',
                         }}>
-                            <p style={{ color: '#FCA5A5', fontSize: '0.85rem', margin: 0 }}> {errorMsg}</p>
+                            <p style={{ color: '#FCA5A5', fontSize: '0.85rem', margin: 0 }}>⚠️ {errorMsg}</p>
                         </div>
                     )}
 
@@ -281,7 +281,7 @@ export default function VipRegistration() {
                                         width: '100%', padding: '0.875rem 1rem 0.875rem 2.75rem', borderRadius: '0.5rem',
                                         background: 'rgba(0,0,0,0.4)', border: '1px solid #3F3F46', color: '#fff', outline: 'none'
                                     }}
-                                    placeholder="Enter The VIP Name"
+                                    placeholder="e.g. Dr. K. Sharma"
                                     disabled={status === 'loading'}
                                 />
                             </div>
@@ -301,7 +301,7 @@ export default function VipRegistration() {
                                         width: '100%', padding: '0.875rem 1rem 0.875rem 2.75rem', borderRadius: '0.5rem',
                                         background: 'rgba(0,0,0,0.4)', border: '1px solid #3F3F46', color: '#fff', outline: 'none'
                                     }}
-                                    placeholder="Chief Guest / Dean"
+                                    placeholder="e.g. Chief Guest / Dean"
                                     disabled={status === 'loading'}
                                 />
                             </div>
@@ -322,7 +322,7 @@ export default function VipRegistration() {
                                         width: '100%', padding: '0.875rem 1rem 0.875rem 2.75rem', borderRadius: '0.5rem',
                                         background: 'rgba(0,0,0,0.4)', border: '1px solid #3F3F46', color: '#fff', outline: 'none'
                                     }}
-                                    placeholder="Enter The Mobile Number Of VIP"
+                                    placeholder="10-digit number"
                                     disabled={status === 'loading'}
                                 />
                             </div>
