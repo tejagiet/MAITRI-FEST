@@ -4,6 +4,13 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import { supabase } from '../supabaseClient'
 
+const IconMail = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+        <polyline points="22,6 12,13 2,6" />
+    </svg>
+)
+
 /* ─── helpers ─── */
 const VIP_GOLD = '#FBBF24'
 const VIP_GOLD_DARK = '#B45309'
@@ -56,7 +63,7 @@ export default function VipRegistration() {
     const [passwordInput, setPasswordInput] = useState('')
     const [authError, setAuthError] = useState('')
 
-    const [formData, setFormData] = useState({ name: '', designation: '', mobile: '' })
+    const [formData, setFormData] = useState({ name: '', designation: '', mobile: '', email: '' })
     const [errors, setErrors] = useState({})
     const [status, setStatus] = useState('idle') // idle | loading | success | error
     const [errorMsg, setErrorMsg] = useState('')
@@ -80,6 +87,9 @@ export default function VipRegistration() {
     const validate = () => {
         const e = {}
         if (!formData.name.trim()) e.name = 'Full name is required'
+        if (!formData.email.trim()) e.email = 'Email address is required'
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim()))
+            e.email = 'Enter a valid email address'
         if (!formData.designation.trim()) e.designation = 'Designation/Role is required'
         if (!formData.mobile.trim()) e.mobile = 'Mobile number is required'
         else if (!/^[6-9]\d{9}$/.test(formData.mobile.trim()))
@@ -91,12 +101,20 @@ export default function VipRegistration() {
     const handleDownload = async () => {
         if (!passRef.current) return
         setDownloading(true)
+
+        // Temporarily set a fixed width for capture
+        const originalWidth = passRef.current.style.width;
+        const originalMaxWidth = passRef.current.style.maxWidth;
+        passRef.current.style.width = '360px';
+        passRef.current.style.maxWidth = 'none';
+
         try {
             const canvas = await html2canvas(passRef.current, {
                 scale: 3,
                 useCORS: true,
                 backgroundColor: '#18181b', // dark bg for VIP
                 logging: false,
+                windowWidth: 360,
             })
             const imgData = canvas.toDataURL('image/png')
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [100, 155] })
@@ -105,6 +123,8 @@ export default function VipRegistration() {
         } catch (err) {
             console.error('PDF generation error:', err)
         } finally {
+            passRef.current.style.width = originalWidth;
+            passRef.current.style.maxWidth = originalMaxWidth;
             setDownloading(false)
         }
     }
@@ -127,6 +147,7 @@ export default function VipRegistration() {
             full_name: formData.name.trim(),
             designation: formData.designation.trim(),
             mobile_number: formData.mobile.trim(),
+            email: formData.email.trim(),
             vip_code: newVipCode
         }])
 
@@ -136,13 +157,30 @@ export default function VipRegistration() {
         } else {
             setGeneratedVipCode(newVipCode)
             setStatus('success')
+
+            // Background Webhook to Google Sheets (Fire and forget)
+            const webhookUrl = import.meta.env.VITE_GOOGLE_WEBHOOK_URL;
+            if (webhookUrl) {
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tableName: 'maitri_vip_registrations',
+                        name: formData.name.trim(),
+                        pin: newVipCode,
+                        mobile: formData.mobile.trim()
+                    })
+                }).catch(err => console.error("Webhook failed:", err));
+            }
+
             // delay so pass renders before auto-download
             setTimeout(() => handleDownload(), 800)
         }
     }
 
     const handleReset = () => {
-        setFormData({ name: '', designation: '', mobile: '' })
+        setFormData({ name: '', designation: '', mobile: '', email: '' })
         setErrors({})
         setStatus('idle')
         setErrorMsg('')
@@ -203,8 +241,8 @@ export default function VipRegistration() {
             {!isAuthenticated ? (
                 <div className="glass-card animate-scale-in" style={{
                     width: '100%', maxWidth: '380px', borderRadius: '1rem',
-                    padding: '2.5rem 2rem', background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(251,191,36,0.2)', backdropFilter: 'blur(12px)'
+                    padding: '2.5rem 2rem', background: 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(251,191,36,0.2)'
                 }}>
                     <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                         <div style={{
@@ -247,8 +285,8 @@ export default function VipRegistration() {
                 /* ──────── VIP REGISTRATION FORM ──────── */
                 <div className="glass-card animate-fade-in-up" style={{
                     width: '100%', maxWidth: '480px', borderRadius: '1.25rem',
-                    padding: '2.5rem 2.25rem', background: 'rgba(24,24,27,0.6)',
-                    border: '1px solid rgba(251,191,36,0.3)', backdropFilter: 'blur(16px)',
+                    padding: '2.5rem 2.25rem', background: 'rgba(24,24,27,0.85)',
+                    border: '1px solid rgba(251,191,36,0.3)',
                     boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)'
                 }}>
                     <h2 style={{ color: '#FCD34D', fontSize: '1.25rem', fontWeight: 600, marginTop: 0, marginBottom: '0.25rem' }}>
@@ -286,6 +324,26 @@ export default function VipRegistration() {
                                 />
                             </div>
                             {errors.name && <p style={{ color: '#FCA5A5', fontSize: '0.75rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.name}</p>}
+                        </div>
+
+                        {/* Email Address */}
+                        <div style={{ marginBottom: '1.25rem' }}>
+                            <label style={{ display: 'block', color: '#D4D4D8', fontSize: '0.8rem', fontWeight: 500, marginBottom: '0.5rem' }}>Email Address</label>
+                            <div style={{ position: 'relative' }}>
+                                <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: VIP_GOLD }}><IconMail /></span>
+                                <input
+                                    type="email"
+                                    value={formData.email}
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    style={{
+                                        width: '100%', padding: '0.875rem 1rem 0.875rem 2.75rem', borderRadius: '0.5rem',
+                                        background: 'rgba(0,0,0,0.4)', border: '1px solid #3F3F46', color: '#fff', outline: 'none'
+                                    }}
+                                    placeholder="e.g. guest@example.com"
+                                    disabled={status === 'loading'}
+                                />
+                            </div>
+                            {errors.email && <p style={{ color: '#FCA5A5', fontSize: '0.75rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.email}</p>}
                         </div>
 
                         {/* Designation */}
@@ -384,7 +442,8 @@ export default function VipRegistration() {
                             {/* Giant faded VIP text in background */}
                             <div style={{
                                 position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                                fontSize: '6rem', fontWeight: 900, color: 'rgba(255,255,255,0.03)', pointerEvents: 'none', zIndex: 0
+                                fontSize: '6rem', fontWeight: 900, color: 'rgba(255,255,255,0.05)',
+                                pointerEvents: 'none', zIndex: 0, width: '100%', textAlign: 'center'
                             }}>
                                 VIP
                             </div>

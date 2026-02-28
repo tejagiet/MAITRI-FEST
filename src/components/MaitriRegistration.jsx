@@ -44,6 +44,13 @@ const IconBuilding = () => (
     </svg>
 )
 
+const IconMail = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+        <polyline points="22,6 12,13 2,6" />
+    </svg>
+)
+
 const IconCheck = () => (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="20 6 9 17 4 12" />
@@ -52,7 +59,7 @@ const IconCheck = () => (
 
 /* ─── component ─── */
 export default function MaitriRegistration() {
-    const [formData, setFormData] = useState({ name: '', pin: '', mobile: '', college: 'ggu_students' })
+    const [formData, setFormData] = useState({ name: '', pin: '', mobile: '', email: '', college: 'ggu_students' })
     const [errors, setErrors] = useState({})
     const [status, setStatus] = useState('idle') // idle | loading | success | error
     const [errorMsg, setErrorMsg] = useState('')
@@ -63,6 +70,9 @@ export default function MaitriRegistration() {
     const validate = () => {
         const e = {}
         if (!formData.name.trim()) e.name = 'Full name is required'
+        if (!formData.email.trim()) e.email = 'Email address is required'
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim()))
+            e.email = 'Enter a valid email address'
         if (!formData.pin.trim()) e.pin = 'PIN number is required'
         else if (!/^[A-Z0-9a-z\-]{5,20}$/.test(formData.pin.trim()))
             e.pin = 'PIN must be 5–20 alphanumeric characters or hyphens'
@@ -72,16 +82,25 @@ export default function MaitriRegistration() {
         return e
     }
 
+
     /* ── PDF download ── */
     const handleDownload = async () => {
         if (!passRef.current) return
         setDownloading(true)
+
+        // Temporarily set a fixed width for capture to ensure consistent aspect ratio
+        const originalWidth = passRef.current.style.width;
+        const originalMaxWidth = passRef.current.style.maxWidth;
+        passRef.current.style.width = '380px';
+        passRef.current.style.maxWidth = 'none';
+
         try {
             const canvas = await html2canvas(passRef.current, {
                 scale: 3,
                 useCORS: true,
                 backgroundColor: '#ffffff',
                 logging: false,
+                windowWidth: 380, // Force window width for media queries
             })
             const imgData = canvas.toDataURL('image/png')
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [100, 152] })
@@ -90,6 +109,9 @@ export default function MaitriRegistration() {
         } catch (err) {
             console.error('PDF generation error:', err)
         } finally {
+            // Restore original styles
+            passRef.current.style.width = originalWidth;
+            passRef.current.style.maxWidth = originalMaxWidth;
             setDownloading(false)
         }
     }
@@ -111,6 +133,7 @@ export default function MaitriRegistration() {
             full_name: formData.name.trim(),
             pin_number: formData.pin.trim().toUpperCase(),
             mobile_number: formData.mobile.trim(),
+            email: formData.email.trim(),
         }])
 
         if (error) {
@@ -122,13 +145,30 @@ export default function MaitriRegistration() {
             }
         } else {
             setStatus('success')
+
+            // Background Webhook to Google Sheets (Fire and forget)
+            const webhookUrl = import.meta.env.VITE_GOOGLE_WEBHOOK_URL;
+            if (webhookUrl) {
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tableName: targetTable,
+                        name: formData.name.trim(),
+                        pin: formData.pin.trim().toUpperCase(),
+                        mobile: formData.mobile.trim()
+                    })
+                }).catch(err => console.error("Webhook failed:", err));
+            }
+
             // small delay so the pass renders with correct data before auto-download
             setTimeout(() => handleDownload(), 800)
         }
     }
 
     const handleReset = () => {
-        setFormData({ name: '', pin: '', mobile: '', college: 'ggu_students' })
+        setFormData({ name: '', pin: '', mobile: '', email: '', college: 'ggu_students' })
         setErrors({})
         setStatus('idle')
         setErrorMsg('')
@@ -237,6 +277,30 @@ export default function MaitriRegistration() {
                             </div>
                             {errors.name && <p style={{ color: '#FCA5A5', fontSize: '0.78rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.name}</p>}
                         </div>
+
+                        {/* Email Address */}
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.825rem', fontWeight: 500, marginBottom: '0.4rem' }}>
+                                Email Address
+                            </label>
+                            <div style={{ position: 'relative' }}>
+                                <span style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#7C3AED' }}>
+                                    <IconMail />
+                                </span>
+                                <input
+                                    id="email-address"
+                                    type="email"
+                                    className="input-field"
+                                    style={{ paddingLeft: '2.6rem' }}
+                                    placeholder="e.g. user@example.com"
+                                    value={formData.email}
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                    disabled={status === 'loading'}
+                                />
+                            </div>
+                            {errors.email && <p style={{ color: '#FCA5A5', fontSize: '0.78rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.email}</p>}
+                        </div>
+
 
                         {/* College Selection */}
                         <div style={{ marginBottom: '1rem' }}>
@@ -416,10 +480,10 @@ export default function MaitriRegistration() {
                                 An Annual Youth Carnival of GGUites
                             </p>
 
-                            <div style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', background: '#F9FAFB', padding: '0.3rem 0.8rem', borderRadius: '0.5rem', border: '1px solid #E5E7EB' }}>
-                                <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.85rem' }}>March</span>
-                                <span style={{ background: '#E11D48', color: '#fff', padding: '0.1rem 0.5rem', borderRadius: '0.25rem', fontWeight: 800, fontSize: '1rem' }}>06 & 07</span>
-                                <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.85rem' }}>2026</span>
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', background: '#F9FAFB', padding: '0.4rem 0.6rem', borderRadius: '0.5rem', border: '1px solid #E5E7EB', margin: '0 auto', width: 'fit-content' }}>
+                                <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem' }}>MARCH</span>
+                                <span style={{ background: '#E11D48', color: '#fff', padding: '0.2rem 0.5rem', borderRadius: '0.25rem', fontWeight: 800, fontSize: '0.9rem', lineHeight: 1 }}>06 & 07</span>
+                                <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem' }}>2026</span>
                             </div>
                         </div>
 

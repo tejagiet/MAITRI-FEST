@@ -1,1 +1,0 @@
-# MAITRI-FEST
