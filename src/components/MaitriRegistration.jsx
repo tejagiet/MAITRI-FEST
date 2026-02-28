@@ -376,7 +376,7 @@ export default function MaitriRegistration() {
                     </div>
 
                     <h2 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem' }}>
-                        Registration Successful! 🎉
+                        Registration Successful! 
                     </h2>
                     <p style={{ color: 'rgba(255,255,255,0.55)', marginBottom: '1.75rem' }}>
                         Your Entry Pass for Maitri 2026 is ready
@@ -454,7 +454,7 @@ export default function MaitriRegistration() {
                                 zIndex: 1
                             }}>
                                 <p style={{ fontSize: '0.65rem', fontWeight: 600, color: '#D1D5DB', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 0.2rem' }}>
-                                    Participant
+                                    Student
                                 </p>
                                 <p style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', margin: '0 0 0.85rem', letterSpacing: '0.02em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
                                     {formData.name.toUpperCase()}
@@ -500,7 +500,7 @@ export default function MaitriRegistration() {
                             </div>
 
                             <p style={{ fontSize: '0.65rem', color: '#D1D5DB', margin: '0', textAlign: 'center', zIndex: 1 }}>
-                                Scan at entry gate
+                                Scan At Entry Gate For Verification
                             </p>
                         </div>
 
@@ -559,7 +559,7 @@ export default function MaitriRegistration() {
 
             {/* Footer */}
             <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.72rem', marginTop: '2rem', marginBottom: 0, textAlign: 'center' }}>
-                © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College
+                © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College • 24295-AI-038
             </p>
 
             {/* Spinner keyframe */}
@@ -569,3 +569,4 @@ export default function MaitriRegistration() {
         </div>
     )
 }
+
