@@ -64,7 +64,7 @@ export default function FacultyRegistration() {
     const [passwordInput, setPasswordInput] = useState('')
     const [authError, setAuthError] = useState('')
 
-    const [formData, setFormData] = useState({ name: '', designation: '', mobile: '', email: '' })
+    const [formData, setFormData] = useState({ name: '', designation: '', mobile: '' })
     const [errors, setErrors] = useState({})
     const [status, setStatus] = useState('idle') // idle | loading | success | error
     const [errorMsg, setErrorMsg] = useState('')
@@ -87,9 +87,6 @@ export default function FacultyRegistration() {
     const validate = () => {
         const e = {}
         if (!formData.name.trim()) e.name = 'Full name is required'
-        if (!formData.email.trim()) e.email = 'Email address is required'
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim()))
-            e.email = 'Enter a valid email address'
         if (!formData.mobile.trim()) e.mobile = 'Mobile number is required'
         else if (!/^[6-9]\d{9}$/.test(formData.mobile.trim()))
             e.mobile = 'Enter a valid 10-digit Indian mobile number'
@@ -145,7 +142,6 @@ export default function FacultyRegistration() {
             full_name: formData.name.trim(),
             designation: formData.designation,
             mobile_number: formData.mobile.trim(),
-            email: formData.email.trim(),
             fac_code: newFacCode
         }])
 
@@ -178,7 +174,7 @@ export default function FacultyRegistration() {
     }
 
     const handleReset = () => {
-        setFormData({ name: '', designation: '', mobile: '', email: '' })
+        setFormData({ name: '', designation: '', mobile: '' })
         setErrors({})
         setStatus('idle')
         setErrorMsg('')
@@ -322,26 +318,6 @@ export default function FacultyRegistration() {
                                 />
                             </div>
                             {errors.name && <p style={{ color: '#FCA5A5', fontSize: '0.75rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.name}</p>}
-                        </div>
-
-                        {/* Email Address */}
-                        <div style={{ marginBottom: '1.25rem' }}>
-                            <label style={{ display: 'block', color: '#CBD5E1', fontSize: '0.8rem', fontWeight: 500, marginBottom: '0.5rem' }}>Email Address</label>
-                            <div style={{ position: 'relative' }}>
-                                <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: FACULTY_ACCENT }}><IconMail /></span>
-                                <input
-                                    type="email"
-                                    value={formData.email}
-                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                    style={{
-                                        width: '100%', padding: '0.875rem 1rem 0.875rem 2.75rem', borderRadius: '0.5rem',
-                                        background: 'rgba(0,0,0,0.4)', border: '1px solid #334155', color: '#fff', outline: 'none'
-                                    }}
-                                    placeholder="e.g. faculty@example.com"
-                                    disabled={status === 'loading'}
-                                />
-                            </div>
-                            {errors.email && <p style={{ color: '#FCA5A5', fontSize: '0.75rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.email}</p>}
                         </div>
 
                         {/* Designation Selection */}

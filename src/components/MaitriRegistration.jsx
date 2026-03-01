@@ -59,7 +59,7 @@ const IconCheck = () => (
 
 /* ─── component ─── */
 export default function MaitriRegistration() {
-    const [formData, setFormData] = useState({ name: '', pin: '', mobile: '', email: '', college: 'ggu_students' })
+    const [formData, setFormData] = useState({ name: '', pin: '', mobile: '', college: 'ggu_students' })
     const [errors, setErrors] = useState({})
     const [status, setStatus] = useState('idle') // idle | loading | success | error
     const [errorMsg, setErrorMsg] = useState('')
@@ -70,9 +70,6 @@ export default function MaitriRegistration() {
     const validate = () => {
         const e = {}
         if (!formData.name.trim()) e.name = 'Full name is required'
-        if (!formData.email.trim()) e.email = 'Email address is required'
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim()))
-            e.email = 'Enter a valid email address'
         if (!formData.pin.trim()) e.pin = 'PIN number is required'
         else if (!/^[A-Z0-9a-z\-]{5,20}$/.test(formData.pin.trim()))
             e.pin = 'PIN must be 5–20 alphanumeric characters or hyphens'
@@ -133,7 +130,6 @@ export default function MaitriRegistration() {
             full_name: formData.name.trim(),
             pin_number: formData.pin.trim().toUpperCase(),
             mobile_number: formData.mobile.trim(),
-            email: formData.email.trim(),
         }])
 
         if (error) {
@@ -168,7 +164,7 @@ export default function MaitriRegistration() {
     }
 
     const handleReset = () => {
-        setFormData({ name: '', pin: '', mobile: '', email: '', college: 'ggu_students' })
+        setFormData({ name: '', pin: '', mobile: '', college: 'ggu_students' })
         setErrors({})
         setStatus('idle')
         setErrorMsg('')
@@ -276,29 +272,6 @@ export default function MaitriRegistration() {
                                 />
                             </div>
                             {errors.name && <p style={{ color: '#FCA5A5', fontSize: '0.78rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.name}</p>}
-                        </div>
-
-                        {/* Email Address */}
-                        <div style={{ marginBottom: '1rem' }}>
-                            <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.825rem', fontWeight: 500, marginBottom: '0.4rem' }}>
-                                Email Address
-                            </label>
-                            <div style={{ position: 'relative' }}>
-                                <span style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#7C3AED' }}>
-                                    <IconMail />
-                                </span>
-                                <input
-                                    id="email-address"
-                                    type="email"
-                                    className="input-field"
-                                    style={{ paddingLeft: '2.6rem' }}
-                                    placeholder="e.g. user@example.com"
-                                    value={formData.email}
-                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                    disabled={status === 'loading'}
-                                />
-                            </div>
-                            {errors.email && <p style={{ color: '#FCA5A5', fontSize: '0.78rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.email}</p>}
                         </div>
 
 

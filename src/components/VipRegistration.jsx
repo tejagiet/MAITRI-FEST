@@ -63,7 +63,7 @@ export default function VipRegistration() {
     const [passwordInput, setPasswordInput] = useState('')
     const [authError, setAuthError] = useState('')
 
-    const [formData, setFormData] = useState({ name: '', designation: '', mobile: '', email: '' })
+    const [formData, setFormData] = useState({ name: '', designation: '', mobile: '' })
     const [errors, setErrors] = useState({})
     const [status, setStatus] = useState('idle') // idle | loading | success | error
     const [errorMsg, setErrorMsg] = useState('')
@@ -87,9 +87,6 @@ export default function VipRegistration() {
     const validate = () => {
         const e = {}
         if (!formData.name.trim()) e.name = 'Full name is required'
-        if (!formData.email.trim()) e.email = 'Email address is required'
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim()))
-            e.email = 'Enter a valid email address'
         if (!formData.designation.trim()) e.designation = 'Designation/Role is required'
         if (!formData.mobile.trim()) e.mobile = 'Mobile number is required'
         else if (!/^[6-9]\d{9}$/.test(formData.mobile.trim()))
@@ -147,7 +144,6 @@ export default function VipRegistration() {
             full_name: formData.name.trim(),
             designation: formData.designation.trim(),
             mobile_number: formData.mobile.trim(),
-            email: formData.email.trim(),
             vip_code: newVipCode
         }])
 
@@ -180,7 +176,7 @@ export default function VipRegistration() {
     }
 
     const handleReset = () => {
-        setFormData({ name: '', designation: '', mobile: '', email: '' })
+        setFormData({ name: '', designation: '', mobile: '' })
         setErrors({})
         setStatus('idle')
         setErrorMsg('')
@@ -324,26 +320,6 @@ export default function VipRegistration() {
                                 />
                             </div>
                             {errors.name && <p style={{ color: '#FCA5A5', fontSize: '0.75rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.name}</p>}
-                        </div>
-
-                        {/* Email Address */}
-                        <div style={{ marginBottom: '1.25rem' }}>
-                            <label style={{ display: 'block', color: '#D4D4D8', fontSize: '0.8rem', fontWeight: 500, marginBottom: '0.5rem' }}>Email Address</label>
-                            <div style={{ position: 'relative' }}>
-                                <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: VIP_GOLD }}><IconMail /></span>
-                                <input
-                                    type="email"
-                                    value={formData.email}
-                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                    style={{
-                                        width: '100%', padding: '0.875rem 1rem 0.875rem 2.75rem', borderRadius: '0.5rem',
-                                        background: 'rgba(0,0,0,0.4)', border: '1px solid #3F3F46', color: '#fff', outline: 'none'
-                                    }}
-                                    placeholder="e.g. guest@example.com"
-                                    disabled={status === 'loading'}
-                                />
-                            </div>
-                            {errors.email && <p style={{ color: '#FCA5A5', fontSize: '0.75rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.email}</p>}
                         </div>
 
                         {/* Designation */}
