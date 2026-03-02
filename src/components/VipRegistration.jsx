@@ -75,7 +75,7 @@ export default function VipRegistration() {
     const handleAuth = (e) => {
         e.preventDefault()
         // Simple hardcoded password for the hidden route
-        if (passwordInput === 'MAITRIVIP26') {
+        if (passwordInput === 'maitri2026') {
             setIsAuthenticated(true)
             setAuthError('')
         } else {
@@ -496,3 +496,4 @@ export default function VipRegistration() {
         </div>
     )
 }
+
