@@ -75,7 +75,7 @@ export default function FacultyRegistration() {
     /* ── Faculty Authentication ── */
     const handleAuth = (e) => {
         e.preventDefault()
-        if (passwordInput === 'MAITRIFACULTY26') {
+        if (passwordInput === 'maitri2026') {
             setIsAuthenticated(true)
             setAuthError('')
         } else {
@@ -502,3 +502,4 @@ export default function FacultyRegistration() {
         </div>
     )
 }
+
