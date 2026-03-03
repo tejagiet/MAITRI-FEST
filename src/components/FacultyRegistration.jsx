@@ -75,7 +75,7 @@ export default function FacultyRegistration() {
     /* ── Faculty Authentication ── */
     const handleAuth = (e) => {
         e.preventDefault()
-        if (passwordInput === 'maitri2026') {
+        if (passwordInput === 'MAITRIFACULTY26') {
             setIsAuthenticated(true)
             setAuthError('')
         } else {
@@ -112,8 +112,10 @@ export default function FacultyRegistration() {
                 windowWidth: 360,
             })
             const imgData = canvas.toDataURL('image/png')
-            const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [100, 155] })
-            pdf.addImage(imgData, 'PNG', 0, 0, 100, 155)
+            const pdfWidth = 100;
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+            const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [pdfWidth, pdfHeight] })
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
             pdf.save(`Faculty_Pass_${formData.name.replace(/\s+/g, '_')}.pdf`)
         } catch (err) {
             console.error('PDF generation error:', err)
@@ -423,9 +425,10 @@ export default function FacultyRegistration() {
                         <div style={{ padding: '2rem 1.5rem', textAlign: 'center', position: 'relative' }}>
                             {/* Giant faded FACULTY text in background */}
                             <div style={{
-                                position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                                position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
                                 fontSize: '4.5rem', fontWeight: 900, color: 'rgba(255,255,255,0.05)',
-                                pointerEvents: 'none', zIndex: 0, width: '100%', textAlign: 'center'
+                                pointerEvents: 'none', zIndex: 0, textAlign: 'center'
                             }}>
                                 FACULTY
                             </div>
@@ -446,7 +449,7 @@ export default function FacultyRegistration() {
                                 display: 'inline-block', position: 'relative', zIndex: 1
                             }}>
                                 <QRCodeCanvas
-                                    value={generatedFacCode || 'FACULTY'}
+                                    value={generatedFacultyCode || 'FACULTY'}
                                     size={110}
                                     fgColor="#000000"
                                     bgColor="#ffffff"
@@ -455,7 +458,7 @@ export default function FacultyRegistration() {
                                 />
                             </div>
                             <p style={{ color: '#64748B', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.1em', marginTop: '0.75rem' }}>
-                                ID: {generatedFacCode}
+                                ID: {generatedFacultyCode}
                             </p>
                         </div>
 
@@ -502,4 +505,3 @@ export default function FacultyRegistration() {
         </div>
     )
 }
-
