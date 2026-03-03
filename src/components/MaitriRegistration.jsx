@@ -455,10 +455,10 @@ export default function MaitriRegistration() {
                                 An{"\u00A0"}Annual{"\u00A0"}Youth{"\u00A0"}Carnival{"\u00A0"}of{"\u00A0"}GGUites
                             </p>
 
-                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', background: '#F9FAFB', padding: '0.5rem 0.75rem', borderRadius: '0.5rem', border: '1px solid #E5E7EB', margin: '0 auto', width: 'fit-content' }}>
-                                <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem' }}>MARCH</span>
-                                <span style={{ background: '#E11D48', color: '#fff', padding: '0.25rem 0.6rem', borderRadius: '0.25rem', fontWeight: 800, fontSize: '0.9rem', lineHeight: 1 }}>06 & 07</span>
-                                <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem' }}>2026</span>
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', background: '#F9FAFB', padding: '0.5rem 0.75rem', borderRadius: '0.5rem', border: '1px solid #E5E7EB', margin: '0 auto', width: 'fit-content', whiteSpace: 'nowrap', flexWrap: 'nowrap' }}>
+                                <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem', whiteSpace: 'nowrap' }}>MARCH</span>
+                                <span style={{ background: '#E11D48', color: '#fff', padding: '0.3rem 0.6rem', borderRadius: '0.25rem', fontWeight: 800, fontSize: '0.85rem', lineHeight: 1, whiteSpace: 'nowrap', flexShrink: 0 }}>06 & 07</span>
+                                <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem', whiteSpace: 'nowrap' }}>2026</span>
                             </div>
                         </div>
 
@@ -554,7 +554,7 @@ export default function MaitriRegistration() {
                                 GODAVARI GLOBAL UNIVERSITY
                             </p>
                             <p style={{ color: '#6B7280', fontSize: '0.6rem', fontWeight: 500, margin: '0' }}>
-                                Chaitanya Knowledge City, NH-16, Rajamahendravaram
+                                Chaitanya {"\u00A0"}Knowledge{"\u00A0"} City,{"\u00A0"} NH-16,{"\u00A0"} Rajamahendravaram
                             </p>
                         </div>
                     </div>

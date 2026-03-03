@@ -458,8 +458,8 @@ export default function VipRegistration() {
 
                         {/* Footer */}
                         <div style={{ background: '#09090b', padding: '1rem', textAlign: 'center', borderTop: '1px solid #27272a' }}>
-                            <p style={{ color: '#FCD34D', fontSize: '0.75rem', fontWeight: 600, margin: 0, letterSpacing: '0.05em' }}>
-                                ALL ACCESS • MARCH 06-07
+                            <p style={{ color: '#FCD34D', fontSize: '0.75rem', fontWeight: 600, margin: 0, letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>
+                                ALL{"\u00A0"}ACCESS{"\u00A0"}•{"\u00A0"}MARCH{"\u00A0"}06-07
                             </p>
                         </div>
                     </div>
