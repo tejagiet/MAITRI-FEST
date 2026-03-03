@@ -4,19 +4,12 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import { supabase } from '../supabaseClient'
 
-const IconMail = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-        <polyline points="22,6 12,13 2,6" />
-    </svg>
-)
-
 /* ─── helpers ─── */
-const FACULTY_SILVER = '#CBD5E1'
-const FACULTY_NAVY = '#1E1B4B'
-const FACULTY_ACCENT = '#6366F1'
+const GGU_PURPLE = '#3B0764'
+const GGU_PURPLE_LIGHT = '#581c87'
+const GGU_GOLD = '#D97706'
 
-/* ─── icons ─── */
+/* ─── icons (pure SVG, no library needed) ─── */
 const IconUser = () => (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -24,23 +17,16 @@ const IconUser = () => (
     </svg>
 )
 
-const IconAward = () => (
+const IconHash = () => (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="8" r="7" />
-        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+        <line x1="4" y1="9" x2="20" y2="9" /><line x1="4" y1="15" x2="20" y2="15" />
+        <line x1="10" y1="3" x2="8" y2="21" /><line x1="16" y1="3" x2="14" y2="21" />
     </svg>
 )
 
 const IconPhone = () => (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.17 3.42 2 2 0 0 1 3.14 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16.92z" />
-    </svg>
-)
-
-const IconLock = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
     </svg>
 )
 
@@ -52,6 +38,19 @@ const IconDownload = () => (
     </svg>
 )
 
+const IconBuilding = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 21h18" /><path d="M9 8h1" /><path d="M9 12h1" /><path d="M9 16h1" /><path d="M14 8h1" /><path d="M14 12h1" /><path d="M14 16h1" /><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16" />
+    </svg>
+)
+
+const IconMail = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+        <polyline points="22,6 12,13 2,6" />
+    </svg>
+)
+
 const IconCheck = () => (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="20 6 9 17 4 12" />
@@ -59,67 +58,66 @@ const IconCheck = () => (
 )
 
 /* ─── component ─── */
-export default function FacultyRegistration() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-    const [passwordInput, setPasswordInput] = useState('')
-    const [authError, setAuthError] = useState('')
-
-    const [formData, setFormData] = useState({ name: '', designation: '', mobile: '' })
+export default function MaitriRegistration() {
+    const [formData, setFormData] = useState({ name: '', pin: '', mobile: '', college: 'ggu_students' })
     const [errors, setErrors] = useState({})
     const [status, setStatus] = useState('idle') // idle | loading | success | error
     const [errorMsg, setErrorMsg] = useState('')
     const [downloading, setDownloading] = useState(false)
-    const [generatedFacultyCode, setGeneratedFacultyCode] = useState('')
     const passRef = useRef(null)
-
-    /* ── Faculty Authentication ── */
-    const handleAuth = (e) => {
-        e.preventDefault()
-        if (passwordInput === 'maitri2026') {
-            setIsAuthenticated(true)
-            setAuthError('')
-        } else {
-            setAuthError('Incorrect Faculty Passcode')
-        }
-    }
 
     /* ── validation ── */
     const validate = () => {
         const e = {}
         if (!formData.name.trim()) e.name = 'Full name is required'
+        if (!formData.pin.trim()) e.pin = 'PIN number is required'
+        else {
+            const trimmedPin = formData.pin.trim().toUpperCase();
+            if (!/^[A-Z0-9\-]{5,20}$/.test(trimmedPin)) {
+                e.pin = 'PIN must be 5–20 alphanumeric characters or hyphens'
+            } else if (formData.college === 'giet_polytechnic') {
+                const purePin = trimmedPin.replace(/-/g, '');
+                if (!purePin.startsWith('23295') && !purePin.startsWith('24295') && !purePin.startsWith('25295')) {
+                    e.pin = 'Polytechnic PIN must start with 23295, 24295, or 25295'
+                }
+            }
+        }
         if (!formData.mobile.trim()) e.mobile = 'Mobile number is required'
         else if (!/^[6-9]\d{9}$/.test(formData.mobile.trim()))
             e.mobile = 'Enter a valid 10-digit Indian mobile number'
         return e
     }
+
+
     /* ── PDF download ── */
     const handleDownload = async () => {
         if (!passRef.current) return
         setDownloading(true)
 
-        // Temporarily set a fixed width for capture
+        // Temporarily set a fixed width for capture to ensure consistent aspect ratio
         const originalWidth = passRef.current.style.width;
         const originalMaxWidth = passRef.current.style.maxWidth;
-        passRef.current.style.width = '360px';
+        passRef.current.style.width = '380px';
         passRef.current.style.maxWidth = 'none';
 
         try {
             const canvas = await html2canvas(passRef.current, {
                 scale: 3,
                 useCORS: true,
-                backgroundColor: '#1e1b4b', // Navy bg for Faculty
+                backgroundColor: '#ffffff',
                 logging: false,
-                windowWidth: 360,
+                windowWidth: 380, // Force window width for media queries
             })
             const imgData = canvas.toDataURL('image/png')
             const pdfWidth = 100;
             const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [pdfWidth, pdfHeight] })
             pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
-            pdf.save(`Faculty_Pass_${formData.name.replace(/\s+/g, '_')}.pdf`)
+            pdf.save(`Maitri_Pass_${formData.pin.trim()}.pdf`)
         } catch (err) {
             console.error('PDF generation error:', err)
         } finally {
+            // Restore original styles
             passRef.current.style.width = originalWidth;
             passRef.current.style.maxWidth = originalMaxWidth;
             setDownloading(false)
@@ -137,21 +135,22 @@ export default function FacultyRegistration() {
         setErrors({})
         setStatus('loading')
 
-        // Generate a unique Faculty Code (e.g. FAC-8492)
-        const newFacCode = `FAC-${Math.floor(1000 + Math.random() * 9000)}`
+        const targetTable = formData.college;
 
-        const { error } = await supabase.from('maitri_faculty_registrations').insert([{
+        const { error } = await supabase.from(targetTable).insert([{
             full_name: formData.name.trim(),
-            designation: formData.designation,
+            pin_number: formData.pin.trim().toUpperCase(),
             mobile_number: formData.mobile.trim(),
-            fac_code: newFacCode
         }])
 
         if (error) {
             setStatus('error')
-            setErrorMsg(error.message)
+            if (error.code === '23505') {
+                setErrorMsg('This PIN is already registered. Each PIN can only be used once.')
+            } else {
+                setErrorMsg(error.message)
+            }
         } else {
-            setGeneratedFacultyCode(newFacCode)
             setStatus('success')
 
             // Background Webhook to Google Sheets (Fire and forget)
@@ -162,25 +161,24 @@ export default function FacultyRegistration() {
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        tableName: 'maitri_faculty_registrations',
+                        tableName: targetTable,
                         name: formData.name.trim(),
-                        pin: newFacCode,
+                        pin: formData.pin.trim().toUpperCase(),
                         mobile: formData.mobile.trim()
                     })
                 }).catch(err => console.error("Webhook failed:", err));
             }
 
-            // delay so pass renders before auto-download
+            // small delay so the pass renders with correct data before auto-download
             setTimeout(() => handleDownload(), 800)
         }
     }
 
     const handleReset = () => {
-        setFormData({ name: '', designation: '', mobile: '' })
+        setFormData({ name: '', pin: '', mobile: '', college: 'ggu_students' })
         setErrors({})
         setStatus('idle')
         setErrorMsg('')
-        setGeneratedFacultyCode('')
     }
 
     /* ─── render ─── */
@@ -188,7 +186,7 @@ export default function FacultyRegistration() {
         <div
             style={{
                 minHeight: '100vh',
-                background: `linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)`, // Deep Blue theme
+                background: `linear-gradient(135deg, ${GGU_PURPLE} 0%, #1e0a38 40%, #0f0520 100%)`,
                 fontFamily: "'Inter', sans-serif",
                 display: 'flex',
                 flexDirection: 'column',
@@ -199,309 +197,432 @@ export default function FacultyRegistration() {
                 overflow: 'hidden',
             }}
         >
-            {/* Elegant Silver/Blue Glow Orbs */}
+            {/* Decorative background orbs */}
             <div style={{
-                position: 'absolute', top: '10%', right: '20%',
-                width: '300px', height: '300px', borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(148,163,184,0.08) 0%, transparent 70%)',
+                position: 'absolute', top: '-120px', right: '-120px',
+                width: '400px', height: '400px', borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(217,119,6,0.18) 0%, transparent 70%)',
                 pointerEvents: 'none',
             }} />
             <div style={{
-                position: 'absolute', bottom: '10%', left: '20%',
-                width: '400px', height: '400px', borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%)',
+                position: 'absolute', bottom: '-80px', left: '-80px',
+                width: '320px', height: '320px', borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%)',
                 pointerEvents: 'none',
             }} />
 
             {/* ──────── HEADER ──────── */}
-            <div className="animate-fade-in-up" style={{ textAlign: 'center', marginBottom: '2.5rem', zIndex: 10 }}>
-                <span style={{
-                    display: 'inline-block', padding: '0.3rem 1rem', borderRadius: '999px',
-                    border: '1px solid #94A3B8', color: '#94A3B8', fontSize: '0.75rem',
-                    fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem'
+            <div className="animate-fade-in-up" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                <div style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '0.75rem',
+                    background: 'rgba(217,119,6,0.12)', border: '1px solid rgba(217,119,6,0.35)',
+                    borderRadius: '999px', padding: '0.4rem 1.2rem', marginBottom: '1rem',
                 }}>
-                    Academic Excellence
-                </span>
-                <h1 style={{
-                    color: '#fff', fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 300,
-                    margin: '0 0 0.5rem', letterSpacing: '0.1em'
-                }}>
-                    FACULTY <span style={{ fontWeight: 800, color: FACULTY_SILVER }}>PORTAL</span>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#FDE68A', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        Godavari Global University
+                    </span>
+                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: GGU_GOLD, display: 'inline-block' }} />
+                    <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#FDE68A', letterSpacing: '0.08em' }}>March 06 & 07, 2026</span>
+                </div>
+
+                <h1
+                    className="shimmer-text"
+                    style={{ fontSize: 'clamp(2.2rem, 6vw, 3.5rem)', fontWeight: 900, margin: '0 0 0.4rem', letterSpacing: '-0.02em' }}
+                >
+                    MAITRI 2026
                 </h1>
-                <p style={{ color: '#94A3B8', fontSize: '0.9rem', margin: 0, letterSpacing: '0.05em' }}>
-                    Godavari Global University • MAITRI 2026
+                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1rem', margin: 0 }}>
+                    An Annual Youth Carnival of GGUites
                 </p>
             </div>
 
-            {/* ──────── AUTHENTICATION SCREEN ──────── */}
-            {!isAuthenticated ? (
-                <div className="glass-card animate-scale-in" style={{
-                    width: '100%', maxWidth: '380px', borderRadius: '1rem',
-                    padding: '2.5rem 2rem', background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(148,163,184,0.2)'
-                }}>
-                    <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                        <div style={{
-                            width: '56px', height: '56px', borderRadius: '50%',
-                            background: 'rgba(148,163,184,0.1)', display: 'inline-flex',
-                            alignItems: 'center', justifyContent: 'center', color: FACULTY_SILVER,
-                            marginBottom: '1rem'
-                        }}>
-                            <IconLock />
-                        </div>
-                        <h2 style={{ color: '#fff', fontSize: '1.25rem', fontWeight: 600, margin: 0 }}>Faculty Access</h2>
-                    </div>
-
-                    <form onSubmit={handleAuth}>
-                        <div style={{ marginBottom: '1.5rem' }}>
-                            <input
-                                type="password"
-                                placeholder="Enter Faculty Passcode"
-                                value={passwordInput}
-                                onChange={(e) => setPasswordInput(e.target.value)}
-                                style={{
-                                    width: '100%', padding: '0.875rem 1rem', borderRadius: '0.5rem',
-                                    background: 'rgba(0,0,0,0.5)', border: '1px solid #334155',
-                                    color: '#fff', fontSize: '1rem', outline: 'none',
-                                    textAlign: 'center', letterSpacing: '0.2em'
-                                }}
-                            />
-                            {authError && <p style={{ color: '#F87171', fontSize: '0.75rem', marginTop: '0.5rem', textAlign: 'center' }}>{authError}</p>}
-                        </div>
-                        <button type="submit" style={{
-                            width: '100%', padding: '0.875rem', borderRadius: '0.5rem',
-                            background: FACULTY_SILVER, color: '#0f172a', fontWeight: 700,
-                            border: 'none', cursor: 'pointer', fontSize: '0.95rem'
-                        }}>
-                            Unlock Faculty Portal
-                        </button>
-                    </form>
-                </div>
-            ) : status !== 'success' ? (
-                /* ──────── FACULTY REGISTRATION FORM ──────── */
-                <div className="glass-card animate-fade-in-up" style={{
-                    width: '100%', maxWidth: '480px', borderRadius: '1.25rem',
-                    padding: '2.5rem 2.25rem', background: 'rgba(15,23,42,0.85)',
-                    border: '1px solid rgba(148,163,184,0.3)',
-                    boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)'
-                }}>
-                    <h2 style={{ color: FACULTY_SILVER, fontSize: '1.25rem', fontWeight: 600, marginTop: 0, marginBottom: '0.25rem' }}>
-                        Issue Faculty Pass
+            {/* ──────── CARD ──────── */}
+            {status !== 'success' ? (
+                <div
+                    className="glass-card animate-fade-in-up"
+                    style={{
+                        width: '100%', maxWidth: '460px', borderRadius: '1.25rem',
+                        padding: '2.25rem 2rem', boxShadow: '0 32px 80px rgba(0,0,0,0.45)',
+                    }}
+                >
+                    <h2 style={{ color: '#fff', fontSize: '1.3rem', fontWeight: 700, marginTop: 0, marginBottom: '0.25rem' }}>
+                        Student Registration
                     </h2>
-                    <p style={{ color: '#94A3B8', fontSize: '0.875rem', marginTop: 0, marginBottom: '2rem' }}>
-                        Generate an official entry pass for faculty and administration members.
+                    <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.875rem', marginTop: 0, marginBottom: '1.75rem' }}>
+                        Fill in your details to get your Entry Pass
                     </p>
 
                     {status === 'error' && (
                         <div style={{
-                            background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)',
-                            borderRadius: '0.5rem', padding: '0.75rem 1rem', marginBottom: '1.5rem',
+                            background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.4)',
+                            borderRadius: '0.625rem', padding: '0.875rem 1rem', marginBottom: '1.25rem',
                         }}>
-                            <p style={{ color: '#FCA5A5', fontSize: '0.85rem', margin: 0 }}>⚠️ {errorMsg}</p>
+                            <p style={{ color: '#FCA5A5', fontSize: '0.875rem', margin: 0 }}>⚠️ {errorMsg}</p>
                         </div>
                     )}
 
                     <form onSubmit={handleSubmit} noValidate>
                         {/* Full Name */}
-                        <div style={{ marginBottom: '1.25rem' }}>
-                            <label style={{ display: 'block', color: '#CBD5E1', fontSize: '0.8rem', fontWeight: 500, marginBottom: '0.5rem' }}>Full Name</label>
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.825rem', fontWeight: 500, marginBottom: '0.4rem' }}>
+                                Full Name
+                            </label>
                             <div style={{ position: 'relative' }}>
-                                <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: FACULTY_ACCENT }}><IconUser /></span>
+                                <span style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#7C3AED' }}>
+                                    <IconUser />
+                                </span>
                                 <input
+                                    id="full-name"
                                     type="text"
+                                    className="input-field"
+                                    style={{ paddingLeft: '2.6rem' }}
+                                    placeholder="e.g. Ravi Kumar"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    style={{
-                                        width: '100%', padding: '0.875rem 1rem 0.875rem 2.75rem', borderRadius: '0.5rem',
-                                        background: 'rgba(0,0,0,0.4)', border: '1px solid #334155', color: '#fff', outline: 'none'
-                                    }}
-                                    placeholder="e.g. Prof. R. S. Rao"
                                     disabled={status === 'loading'}
                                 />
                             </div>
-                            {errors.name && <p style={{ color: '#FCA5A5', fontSize: '0.75rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.name}</p>}
+                            {errors.name && <p style={{ color: '#FCA5A5', fontSize: '0.78rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.name}</p>}
                         </div>
 
-                        {/* Designation Selection */}
-                        <div style={{ marginBottom: '1.25rem' }}>
-                            <label style={{ display: 'block', color: '#CBD5E1', fontSize: '0.8rem', fontWeight: 500, marginBottom: '0.5rem' }}>Designation / Role</label>
+
+                        {/* College Selection */}
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.825rem', fontWeight: 500, marginBottom: '0.4rem' }}>
+                                College / Institution
+                            </label>
                             <div style={{ position: 'relative' }}>
-                                <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: FACULTY_ACCENT }}><IconAward /></span>
+                                <span style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#7C3AED' }}>
+                                    <IconBuilding />
+                                </span>
                                 <select
-                                    value={formData.designation}
-                                    onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
-                                    style={{
-                                        width: '100%', padding: '0.875rem 1rem 0.875rem 2.75rem', borderRadius: '0.5rem',
-                                        background: 'rgba(0,0,0,0.4)', border: '1px solid #334155', color: '#fff', outline: 'none',
-                                        appearance: 'none', cursor: 'pointer'
-                                    }}
+                                    className="input-field"
+                                    style={{ paddingLeft: '2.6rem', cursor: 'pointer', appearance: 'none' }}
+                                    value={formData.college}
+                                    onChange={(e) => setFormData({ ...formData, college: e.target.value })}
                                     disabled={status === 'loading'}
                                 >
-                                    <option value="">Select Designation</option>
-                                    <option value="Principal">Principal</option>
-                                    <option value="Vice Principal">Vice Principal</option>
-                                    <option value="HOD">Head of Department (HOD)</option>
-                                    <option value="Faculty">Faculty Member</option>
-                                    <option value="Staff">Administrative Staff</option>
+                                    <option value="ggu_students">Godavari Global University (GGU)</option>
+                                    <option value="giet_engineering">GIET Engineering College</option>
+                                    <option value="giet_pharmacy">GIET Pharmacy</option>
+                                    <option value="giet_degree">GIET Degree College</option>
+                                    <option value="giet_polytechnic">GIET Polytechnic</option>
                                 </select>
-                                <span style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: FACULTY_ACCENT, pointerEvents: 'none' }}>
+                                {/* Custom arrow for select */}
+                                <span style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#7C3AED', pointerEvents: 'none' }}>
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </span>
                             </div>
                         </div>
 
-                        {/* Mobile */}
-                        <div style={{ marginBottom: '2rem' }}>
-                            <label style={{ display: 'block', color: '#CBD5E1', fontSize: '0.8rem', fontWeight: 500, marginBottom: '0.5rem' }}>Mobile Number</label>
+                        {/* PIN */}
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.825rem', fontWeight: 500, marginBottom: '0.4rem' }}>
+                                PIN Number <span style={{ color: '#9CA3AF', fontWeight: 400 }}>(Student ID / Roll No.)</span>
+                            </label>
                             <div style={{ position: 'relative' }}>
-                                <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: FACULTY_ACCENT }}><IconPhone /></span>
+                                <span style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#7C3AED' }}>
+                                    <IconHash />
+                                </span>
                                 <input
-                                    type="tel"
-                                    maxLength={10}
-                                    value={formData.mobile}
-                                    onChange={(e) => setFormData({ ...formData, mobile: e.target.value.replace(/\D/, '') })}
-                                    style={{
-                                        width: '100%', padding: '0.875rem 1rem 0.875rem 2.75rem', borderRadius: '0.5rem',
-                                        background: 'rgba(0,0,0,0.4)', border: '1px solid #334155', color: '#fff', outline: 'none'
-                                    }}
-                                    placeholder="10-digit number"
+                                    id="pin-number"
+                                    type="text"
+                                    className="input-field"
+                                    style={{ paddingLeft: '2.6rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}
+                                    placeholder="e.g. 22L61A0501"
+                                    value={formData.pin}
+                                    onChange={(e) => setFormData({ ...formData, pin: e.target.value })}
                                     disabled={status === 'loading'}
                                 />
                             </div>
-                            {errors.mobile && <p style={{ color: '#FCA5A5', fontSize: '0.75rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.mobile}</p>}
+                            {errors.pin && <p style={{ color: '#FCA5A5', fontSize: '0.78rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.pin}</p>}
                         </div>
 
+                        {/* Mobile */}
+                        <div style={{ marginBottom: '1.75rem' }}>
+                            <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.825rem', fontWeight: 500, marginBottom: '0.4rem' }}>
+                                Mobile Number
+                            </label>
+                            <div style={{ position: 'relative' }}>
+                                <span style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#7C3AED' }}>
+                                    <IconPhone />
+                                </span>
+                                <input
+                                    id="mobile-number"
+                                    type="tel"
+                                    className="input-field"
+                                    style={{ paddingLeft: '2.6rem' }}
+                                    placeholder="10-digit mobile number"
+                                    maxLength={10}
+                                    value={formData.mobile}
+                                    onChange={(e) => setFormData({ ...formData, mobile: e.target.value.replace(/\D/, '') })}
+                                    disabled={status === 'loading'}
+                                />
+                            </div>
+                            {errors.mobile && <p style={{ color: '#FCA5A5', fontSize: '0.78rem', marginTop: '0.3rem', marginBottom: 0 }}>{errors.mobile}</p>}
+                        </div>
+
+                        {/* Submit button */}
                         <button
+                            id="register-btn"
                             type="submit"
                             disabled={status === 'loading'}
                             style={{
-                                width: '100%', padding: '1rem', borderRadius: '0.5rem', border: 'none',
-                                background: status === 'loading' ? '#334155' : `linear-gradient(90deg, #64748B, #CBD5E1, #64748B)`,
-                                color: '#0f172a', fontSize: '1rem', fontWeight: 800, cursor: status === 'loading' ? 'not-allowed' : 'pointer',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem'
+                                width: '100%',
+                                padding: '0.9rem',
+                                borderRadius: '0.75rem',
+                                border: 'none',
+                                cursor: status === 'loading' ? 'not-allowed' : 'pointer',
+                                background: status === 'loading'
+                                    ? 'rgba(109,40,217,0.5)'
+                                    : `linear-gradient(135deg, #6D28D9 0%, ${GGU_PURPLE} 100%)`,
+                                color: '#fff',
+                                fontSize: '1rem',
+                                fontWeight: 700,
+                                fontFamily: "'Inter', sans-serif",
+                                letterSpacing: '0.01em',
+                                transition: 'transform 0.15s, box-shadow 0.15s',
+                                boxShadow: status === 'loading' ? 'none' : '0 4px 20px rgba(109,40,217,0.5)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '0.5rem',
                             }}
+                            onMouseEnter={(e) => { if (status !== 'loading') { e.target.style.transform = 'translateY(-1px)'; e.target.style.boxShadow = '0 8px 28px rgba(109,40,217,0.65)' } }}
+                            onMouseLeave={(e) => { e.target.style.transform = 'translateY(0)'; e.target.style.boxShadow = '0 4px 20px rgba(109,40,217,0.5)' }}
                         >
-                            {status === 'loading' ? 'Generating Pass...' : 'Generate Faculty Pass'}
+                            {status === 'loading' ? (
+                                <>
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ animation: 'spin 0.8s linear infinite' }}>
+                                        <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                                    </svg>
+                                    Registering…
+                                </>
+                            ) : (
+                                '🎟️ Register & Get Pass'
+                            )}
                         </button>
                     </form>
-                </div>
-            ) : (
-                /* ──────── SUCCESS & FACULTY PASS PREVIEW ──────── */
-                <div className="animate-scale-in" style={{ textAlign: 'center', width: '100%', maxWidth: '420px', zIndex: 10 }}>
-                    <h2 style={{ color: FACULTY_SILVER, fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem' }}>Pass Generated</h2>
-                    <p style={{ color: '#94A3B8', marginBottom: '2rem' }}>Faculty credentials issued successfully.</p>
 
-                    {/* ── FACULTY PASS (on-screen) ── */}
+                    <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.28)', fontSize: '0.75rem', marginTop: '1.25rem', marginBottom: 0 }}>
+                        Your data is stored securely. Each PIN can only register once.
+                    </p>
+                </div>
+
+            ) : (
+                /* ──────── SUCCESS STATE ──────── */
+                <div className="animate-scale-in" style={{ textAlign: 'center', width: '100%', maxWidth: '480px' }}>
+                    {/* Success badge */}
+                    <div style={{
+                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                        width: '64px', height: '64px', borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #059669, #10B981)',
+                        boxShadow: '0 0 32px rgba(16,185,129,0.5)',
+                        marginBottom: '1rem', color: '#fff',
+                    }}>
+                        <IconCheck />
+                    </div>
+
+                    <h2 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem' }}>
+                        Registration Successful! 🎉
+                    </h2>
+                    <p style={{ color: 'rgba(255,255,255,0.55)', marginBottom: '1.75rem' }}>
+                        Your Entry Pass for Maitri 2026 is ready
+                    </p>
+
+                    {/* ── ENTRY PASS (on-screen) ── */}
                     <div
                         ref={passRef}
-                        id="faculty-pass-to-print"
+                        id="pass-to-print"
                         style={{
-                            background: '#1e1b4b', // Navy Blue
-                            borderRadius: '0.75rem',
+                            background: '#fff',
+                            borderRadius: '1rem',
                             overflow: 'hidden',
-                            boxShadow: '0 24px 64px rgba(0,0,0,0.8)',
-                            border: `2px solid #334155`,
+                            boxShadow: '0 24px 64px rgba(0,0,0,0.5)',
+                            border: `2px solid #E5E7EB`,
                             width: '100%',
-                            maxWidth: '360px',
+                            maxWidth: '380px',
                             margin: '0 auto 1.5rem',
                             fontFamily: "'Inter', sans-serif",
-                            position: 'relative'
                         }}
                     >
-                        {/* Silver Border Top */}
-                        <div style={{ height: '6px', background: 'linear-gradient(90deg, #475569, #CBD5E1, #475569)' }} />
-
-                        {/* Header */}
-                        <div style={{ padding: '1.5rem 1.5rem 1rem', textAlign: 'center', borderBottom: '1px solid #334155' }}>
-                            <p style={{ color: '#94A3B8', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', margin: '0 0 0.5rem', wordSpacing: '0.15rem' }}>
+                        {/* Pass Header */}
+                        <div style={{
+                            background: '#ffffff',
+                            padding: '1.25rem 1.25rem 1rem',
+                            textAlign: 'center',
+                            position: 'relative',
+                            borderBottom: '2px solid #F3F4F6'
+                        }}>
+                            <h3 style={{ color: '#1E3A8A', fontSize: '1.5rem', fontWeight: 900, margin: '0 0 0.15rem', letterSpacing: '0.05em' }}>
+                                <span style={{ color: '#E11D48' }}>GGU</span> MAITRI
+                            </h3>
+                            <p style={{ color: '#4B5563', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>
                                 Godavari Global University
                             </p>
-                            <h2 style={{ color: '#fff', fontSize: '2rem', fontWeight: 200, letterSpacing: '0.15em', margin: '0' }}>
-                                MAITRI<span style={{ fontWeight: 800, color: FACULTY_SILVER }}>'26</span>
-                            </h2>
+                            <p style={{ color: '#6B7280', fontSize: '0.75rem', fontStyle: 'italic', margin: '0 0 0.75rem', whiteSpace: 'nowrap' }}>
+                                An{"\u00A0"}Annual{"\u00A0"} Youth{"\u00A0"} Carnival{"\u00A0"} of{"\u00A0"} GGUites
+                            </p>
+
+                            <div style={{ textAlign: 'center' }}>
+                                <table style={{
+                                    background: '#F9FAFB',
+                                    borderRadius: '0.5rem',
+                                    border: '1px solid #E5E7EB',
+                                    margin: '0 auto',
+                                    borderCollapse: 'separate',
+                                    borderSpacing: '0.4rem 0.4rem',
+                                    display: 'inline-table'
+                                }}>
+                                    <tbody>
+                                        <tr>
+                                            <td style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem', verticalAlign: 'middle', padding: 0 }}>MARCH</td>
+                                            <td style={{ padding: 0 }}>
+                                                <div style={{ background: '#E11D48', color: '#fff', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', fontWeight: 800, fontSize: '0.85rem', lineHeight: 1, whiteSpace: 'nowrap' }}>
+                                                    06 & 07
+                                                </div>
+                                            </td>
+                                            <td style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem', verticalAlign: 'middle', padding: 0 }}>2026</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
-                        {/* Body */}
-                        <div style={{ padding: '2rem 1.5rem', textAlign: 'center', position: 'relative' }}>
-                            {/* Giant faded FACULTY text in background */}
+                        {/* Pass Body (Concert vibe colors to match pamphlet middle) */}
+                        <div style={{
+                            background: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)',
+                            position: 'relative',
+                            padding: '1.5rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            overflow: 'hidden'
+                        }}>
+                            {/* Colorful neon light effects in the background */}
+                            <div style={{ position: 'absolute', top: '-40px', left: '-40px', width: '130px', height: '130px', background: 'radial-gradient(circle, rgba(236,72,153,0.5) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
+                            <div style={{ position: 'absolute', bottom: '-40px', right: '-40px', width: '130px', height: '130px', background: 'radial-gradient(circle, rgba(56,189,248,0.5) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
+                            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '150px', height: '150px', background: 'radial-gradient(circle, rgba(168,85,247,0.4) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
+
+                            <p style={{ color: '#FDE047', fontSize: '0.9rem', fontWeight: 900, letterSpacing: '0.08em', margin: '0 0 1.25rem', textTransform: 'uppercase', textShadow: '0 2px 4px rgba(0,0,0,0.6)', zIndex: 1, textAlign: 'center' }}>
+                                Dare to Dream <br /> Compete to Win
+                            </p>
+
+                            {/* Student info card styled distinctively */}
                             <div style={{
-                                position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                fontSize: '4.5rem', fontWeight: 900, color: 'rgba(255,255,255,0.05)',
-                                pointerEvents: 'none', zIndex: 0, textAlign: 'center'
+                                width: '100%',
+                                background: 'rgba(255,255,255,0.12)',
+                                backdropFilter: 'blur(10px)',
+                                border: '1px solid rgba(255,255,255,0.25)',
+                                borderRadius: '0.75rem',
+                                padding: '1.25rem 1rem',
+                                marginBottom: '1.25rem',
+                                zIndex: 1
                             }}>
-                                FACULTY
+                                <p style={{ fontSize: '0.65rem', fontWeight: 600, color: '#D1D5DB', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 0.2rem' }}>
+                                    Participant
+                                </p>
+                                <p style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', margin: '0 0 0.85rem', letterSpacing: '0.02em', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+                                    {formData.name.toUpperCase()}
+                                </p>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <div>
+                                        <p style={{ fontSize: '0.6rem', fontWeight: 600, color: '#9CA3AF', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 0.2rem' }}>
+                                            PIN / ID
+                                        </p>
+                                        <p style={{ fontSize: '0.9rem', fontWeight: 700, color: '#F3F4F6', margin: 0, letterSpacing: '0.08em' }}>
+                                            {formData.pin.toUpperCase()}
+                                        </p>
+                                    </div>
+                                    <div style={{ textAlign: 'right' }}>
+                                        <p style={{ fontSize: '0.6rem', fontWeight: 600, color: '#9CA3AF', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 0.2rem' }}>
+                                            Mobile
+                                        </p>
+                                        <p style={{ fontSize: '0.9rem', fontWeight: 700, color: '#F3F4F6', margin: 0 }}>
+                                            {formData.mobile}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
 
-                            <p style={{ color: FACULTY_SILVER, fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.2em', margin: '0 0 1rem', position: 'relative', zIndex: 1 }}>
-                                {formData.designation.toUpperCase()}
-                            </p>
-
-                            <h3 style={{ color: '#ffffff', fontSize: '1.4rem', fontWeight: 800, margin: '0 0 0.5rem', position: 'relative', zIndex: 1 }}>
-                                {formData.name.toUpperCase()}
-                            </h3>
-                            <p style={{ color: '#94A3B8', fontSize: '0.85rem', fontWeight: 500, margin: '0 0 0.2rem', position: 'relative', zIndex: 1, wordSpacing: '0.15rem' }}>
-                                GGU Academic Staff
-                            </p>
-
+                            {/* QR Code section */}
                             <div style={{
-                                background: '#ffffff', padding: '0.5rem', borderRadius: '0.5rem',
-                                display: 'inline-block', position: 'relative', zIndex: 1
+                                background: '#ffffff',
+                                borderRadius: '0.5rem',
+                                padding: '0.4rem',
+                                border: '2px solid rgba(255,255,255,0.8)',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+                                marginBottom: '0.5rem',
+                                zIndex: 1
                             }}>
                                 <QRCodeCanvas
-                                    value={generatedFacultyCode || 'FACULTY'}
-                                    size={110}
+                                    value={formData.pin.trim().toUpperCase() || 'MAITRI2026'}
+                                    size={100}
                                     fgColor="#000000"
                                     bgColor="#ffffff"
                                     level="H"
                                     includeMargin={false}
                                 />
                             </div>
-                            <p style={{ color: '#64748B', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.1em', marginTop: '0.75rem' }}>
-                                ID: {generatedFacultyCode}
+
+                            <p style={{ fontSize: '0.65rem', color: '#D1D5DB', margin: '0', textAlign: 'center', zIndex: 1 }}>
+                                Scan at entry gate
                             </p>
                         </div>
 
-                        {/* Footer */}
-                        <div style={{ background: '#0f172a', padding: '1rem', textAlign: 'center', borderTop: '1px solid #334155' }}>
-                            <p style={{ color: FACULTY_SILVER, fontSize: '0.75rem', fontWeight: 600, margin: 0, letterSpacing: '0.05em', wordSpacing: '0.15rem' }}>
-                                OFFICIAL ENTRY • MARCH 06-07
+                        {/* Pass Footer */}
+                        <div style={{
+                            background: '#ffffff',
+                            padding: '0.75rem',
+                            textAlign: 'center',
+                            borderTop: '2px dashed #E5E7EB'
+                        }}>
+                            <p style={{ color: '#1E3A8A', fontSize: '0.75rem', fontWeight: 800, margin: '0 0 0.15rem', letterSpacing: '0.02em' }}>
+                                GODAVARI GLOBAL UNIVERSITY
+                            </p>
+                            <p style={{ color: '#6B7280', fontSize: '0.62rem', fontWeight: 500, margin: '0' }}>
+                                Chaitanya {"\u00A0"} Knowledge{"\u00A0"} City,{"\u00A0"} NH-16,{"\u00A0"} Rajamahendravaram
                             </p>
                         </div>
                     </div>
 
-                    {/* Actions */}
-                    <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+                    {/* Action buttons */}
+                    <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                         <button
+                            id="download-pass-btn"
                             onClick={handleDownload}
                             disabled={downloading}
                             className="animate-pulse-glow"
                             style={{
                                 display: 'flex', alignItems: 'center', gap: '0.5rem',
-                                padding: '0.8rem 1.5rem', borderRadius: '0.5rem',
-                                background: `linear-gradient(90deg, #475569, #94A3B8)`,
-                                color: '#0f172a', fontSize: '0.9rem', fontWeight: 700,
+                                padding: '0.8rem 1.5rem', borderRadius: '0.75rem',
+                                background: `linear-gradient(135deg, ${GGU_GOLD}, #B45309)`,
+                                color: '#fff', fontSize: '0.95rem', fontWeight: 700,
                                 border: 'none', cursor: downloading ? 'not-allowed' : 'pointer',
+                                fontFamily: "'Inter', sans-serif",
                                 opacity: downloading ? 0.7 : 1,
                             }}
                         >
                             <IconDownload />
-                            {downloading ? 'Downloading...' : 'Download Pass'}
+                            {downloading ? 'Generating…' : 'Download Entry Pass PDF'}
                         </button>
+
                         <button
+                            id="register-another-btn"
                             onClick={handleReset}
                             style={{
-                                padding: '0.8rem 1.5rem', borderRadius: '0.5rem',
-                                background: 'transparent', border: '1px solid #334155',
-                                color: '#94A3B8', fontSize: '0.9rem', fontWeight: 600,
-                                cursor: 'pointer'
+                                padding: '0.8rem 1.5rem', borderRadius: '0.75rem',
+                                background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)',
+                                color: 'rgba(255,255,255,0.85)', fontSize: '0.95rem', fontWeight: 600,
+                                cursor: 'pointer', fontFamily: "'Inter', sans-serif",
                             }}
                         >
-                            Issue Another
+                            Register Another
                         </button>
                     </div>
                 </div>
             )}
+
             {/* Footer */}
             <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.72rem', marginTop: '2rem', marginBottom: 0, textAlign: 'center' }}>
                 © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College • 24295-AI-038
@@ -509,10 +630,8 @@ export default function FacultyRegistration() {
 
             {/* Spinner keyframe */}
             <style>{`
-                @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-            `}</style>
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      `}</style>
         </div>
     )
 }
-
-

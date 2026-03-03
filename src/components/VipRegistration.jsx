@@ -407,7 +407,7 @@ export default function VipRegistration() {
 
                         {/* Header */}
                         <div style={{ padding: '1.5rem 1.5rem 1rem', textAlign: 'center', borderBottom: '1px solid #27272a' }}>
-                            <p style={{ color: '#D4D4D8', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', margin: '0 0 0.5rem', wordSpacing: '0.15rem' }}>
+                            <p style={{ color: '#D4D4D8', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>
                                 Godavari Global University
                             </p>
                             <h2 style={{ color: '#fff', fontSize: '2rem', fontWeight: 200, letterSpacing: '0.15em', margin: '0' }}>
@@ -458,8 +458,8 @@ export default function VipRegistration() {
 
                         {/* Footer */}
                         <div style={{ background: '#09090b', padding: '1rem', textAlign: 'center', borderTop: '1px solid #27272a' }}>
-                            <p style={{ color: '#FCD34D', fontSize: '0.75rem', fontWeight: 600, margin: 0, letterSpacing: '0.05em', wordSpacing: '0.15rem' }}>
-                                ALL ACCESS • MARCH 06-07
+                            <p style={{ color: '#FCD34D', fontSize: '0.75rem', fontWeight: 600, margin: 0, letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>
+                                ALL{"\u00A0"}ACCESS{"\u00A0"}•{"\u00A0"}MARCH{"\u00A0"}06-07
                             </p>
                         </div>
                     </div>
