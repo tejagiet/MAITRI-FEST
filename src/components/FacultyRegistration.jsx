@@ -413,7 +413,7 @@ export default function FacultyRegistration() {
 
                         {/* Header */}
                         <div style={{ padding: '1.5rem 1.5rem 1rem', textAlign: 'center', borderBottom: '1px solid #334155' }}>
-                            <p style={{ color: '#94A3B8', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>
+                            <p style={{ color: '#94A3B8', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', margin: '0 0 0.5rem', wordSpacing: '0.15rem' }}>
                                 Godavari Global University
                             </p>
                             <h2 style={{ color: '#fff', fontSize: '2rem', fontWeight: 200, letterSpacing: '0.15em', margin: '0' }}>
@@ -440,7 +440,7 @@ export default function FacultyRegistration() {
                             <h3 style={{ color: '#ffffff', fontSize: '1.4rem', fontWeight: 800, margin: '0 0 0.5rem', position: 'relative', zIndex: 1 }}>
                                 {formData.name.toUpperCase()}
                             </h3>
-                            <p style={{ color: '#94A3B8', fontSize: '0.85rem', fontWeight: 500, margin: '0 0 0.2rem', position: 'relative', zIndex: 1 }}>
+                            <p style={{ color: '#94A3B8', fontSize: '0.85rem', fontWeight: 500, margin: '0 0 0.2rem', position: 'relative', zIndex: 1, wordSpacing: '0.15rem' }}>
                                 GGU Academic Staff
                             </p>
 
@@ -464,7 +464,7 @@ export default function FacultyRegistration() {
 
                         {/* Footer */}
                         <div style={{ background: '#0f172a', padding: '1rem', textAlign: 'center', borderTop: '1px solid #334155' }}>
-                            <p style={{ color: FACULTY_SILVER, fontSize: '0.75rem', fontWeight: 600, margin: 0, letterSpacing: '0.05em' }}>
+                            <p style={{ color: FACULTY_SILVER, fontSize: '0.75rem', fontWeight: 600, margin: 0, letterSpacing: '0.05em', wordSpacing: '0.15rem' }}>
                                 OFFICIAL ENTRY • MARCH 06-07
                             </p>
                         </div>

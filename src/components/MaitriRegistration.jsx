@@ -399,7 +399,7 @@ export default function MaitriRegistration() {
                                     Registering…
                                 </>
                             ) : (
-                                '🎟️ Register & Get Pass'
+                                'Register & Get Pass'
                             )}
                         </button>
                     </form>
@@ -424,7 +424,7 @@ export default function MaitriRegistration() {
                     </div>
 
                     <h2 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem' }}>
-                        Registration Successful! 🎉
+                        Registration Successful!
                     </h2>
                     <p style={{ color: 'rgba(255,255,255,0.55)', marginBottom: '1.75rem' }}>
                         Your Entry Pass for Maitri 2026 is ready
@@ -460,32 +460,16 @@ export default function MaitriRegistration() {
                             <p style={{ color: '#4B5563', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>
                                 Godavari Global University
                             </p>
-                            <p style={{ color: '#6B7280', fontSize: '0.75rem', fontStyle: 'italic', margin: '0 0 0.75rem', whiteSpace: 'nowrap' }}>
-                                An{"\u00A0"}Annual{"\u00A0"} Youth{"\u00A0"} Carnival{"\u00A0"} of{"\u00A0"} GGUites
+                            <p style={{ color: '#6B7280', fontSize: '0.75rem', fontStyle: 'italic', margin: '0 0 0.75rem', wordSpacing: '0.15rem' }}>
+                                An Annual Youth Carnival of GGUites
                             </p>
 
                             <div style={{ textAlign: 'center' }}>
-                                <table style={{
-                                    background: '#F9FAFB',
-                                    borderRadius: '0.5rem',
-                                    border: '1px solid #E5E7EB',
-                                    margin: '0 auto',
-                                    borderCollapse: 'separate',
-                                    borderSpacing: '0.4rem 0.4rem',
-                                    display: 'inline-table'
-                                }}>
-                                    <tbody>
-                                        <tr>
-                                            <td style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem', verticalAlign: 'middle', padding: 0 }}>MARCH</td>
-                                            <td style={{ padding: 0 }}>
-                                                <div style={{ background: '#E11D48', color: '#fff', padding: '0.25rem 0.5rem', borderRadius: '0.25rem', fontWeight: 800, fontSize: '0.85rem', lineHeight: 1, whiteSpace: 'nowrap' }}>
-                                                    06 & 07
-                                                </div>
-                                            </td>
-                                            <td style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem', verticalAlign: 'middle', padding: 0 }}>2026</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div style={{ display: 'inline-flex', alignItems: 'baseline', justifyContent: 'center', gap: '0.5rem', background: '#F9FAFB', padding: '0.4rem 0.6rem', borderRadius: '0.5rem', border: '1px solid #E5E7EB', margin: '0 auto', whiteSpace: 'nowrap' }}>
+                                    <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem', lineHeight: '1.2' }}>MARCH</span>
+                                    <span style={{ background: '#E11D48', color: '#fff', padding: '0.2rem 0.6rem', borderRadius: '0.25rem', fontWeight: 800, fontSize: '0.85rem', lineHeight: '1.2', display: 'inline-block' }}>06 & 07</span>
+                                    <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem', lineHeight: '1.2' }}>2026</span>
+                                </div>
                             </div>
                         </div>
 
@@ -580,8 +564,8 @@ export default function MaitriRegistration() {
                             <p style={{ color: '#1E3A8A', fontSize: '0.75rem', fontWeight: 800, margin: '0 0 0.15rem', letterSpacing: '0.02em' }}>
                                 GODAVARI GLOBAL UNIVERSITY
                             </p>
-                            <p style={{ color: '#6B7280', fontSize: '0.62rem', fontWeight: 500, margin: '0' }}>
-                                Chaitanya {"\u00A0"} Knowledge{"\u00A0"} City,{"\u00A0"} NH-16,{"\u00A0"} Rajamahendravaram
+                            <p style={{ color: '#6B7280', fontSize: '0.62rem', fontWeight: 500, margin: '0', wordSpacing: '0.1rem' }}>
+                                Chaitanya Knowledge City, NH-16, Rajamahendravaram
                             </p>
                         </div>
                     </div>
