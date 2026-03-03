@@ -502,6 +502,15 @@ export default function FacultyRegistration() {
                     </div>
                 </div>
             )}
+            {/* Footer */}
+            <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.72rem', marginTop: '2rem', marginBottom: 0, textAlign: 'center' }}>
+                © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College • 24295-AI-038
+            </p>
+
+            {/* Spinner keyframe */}
+            <style>{`
+                @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+            `}</style>
         </div>
     )
 }

@@ -451,13 +451,13 @@ export default function MaitriRegistration() {
                             <p style={{ color: '#4B5563', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>
                                 Godavari Global University
                             </p>
-                            <p style={{ color: '#6B7280', fontSize: '0.75rem', fontStyle: 'italic', margin: '0 0 0.75rem' }}>
-                                An Annual Youth Carnival of GGUites
+                            <p style={{ color: '#6B7280', fontSize: '0.75rem', fontStyle: 'italic', margin: '0 0 0.75rem', whiteSpace: 'nowrap' }}>
+                                An{"\u00A0"}Annual{"\u00A0"}Youth{"\u00A0"}Carnival{"\u00A0"}of{"\u00A0"}GGUites
                             </p>
 
-                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', background: '#F9FAFB', padding: '0.4rem 0.6rem', borderRadius: '0.5rem', border: '1px solid #E5E7EB', margin: '0 auto', width: 'fit-content' }}>
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', background: '#F9FAFB', padding: '0.5rem 0.75rem', borderRadius: '0.5rem', border: '1px solid #E5E7EB', margin: '0 auto', width: 'fit-content' }}>
                                 <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem' }}>MARCH</span>
-                                <span style={{ background: '#E11D48', color: '#fff', padding: '0.2rem 0.5rem', borderRadius: '0.25rem', fontWeight: 800, fontSize: '0.9rem', lineHeight: 1 }}>06 & 07</span>
+                                <span style={{ background: '#E11D48', color: '#fff', padding: '0.25rem 0.6rem', borderRadius: '0.25rem', fontWeight: 800, fontSize: '0.9rem', lineHeight: 1 }}>06 & 07</span>
                                 <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem' }}>2026</span>
                             </div>
                         </div>
@@ -598,7 +598,7 @@ export default function MaitriRegistration() {
 
             {/* Footer */}
             <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.72rem', marginTop: '2rem', marginBottom: 0, textAlign: 'center' }}>
-                © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College
+                © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College • 24295-AI-038
             </p>
 
             {/* Spinner keyframe */}
