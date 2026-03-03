@@ -390,7 +390,7 @@ export default function MaitriRegistration() {
                                     Registering…
                                 </>
                             ) : (
-                                '🎟️ Register & Get Pass'
+                                ' Register & Get Pass'
                             )}
                         </button>
                     </form>
@@ -415,7 +415,7 @@ export default function MaitriRegistration() {
                     </div>
 
                     <h2 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem' }}>
-                        Registration Successful! 🎉
+                        Registration Successful! 
                     </h2>
                     <p style={{ color: 'rgba(255,255,255,0.55)', marginBottom: '1.75rem' }}>
                         Your Entry Pass for Maitri 2026 is ready
