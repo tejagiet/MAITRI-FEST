@@ -457,7 +457,7 @@ export default function MaitriRegistration() {
 
                             <div style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', background: '#F9FAFB', padding: '0.4rem 0.6rem', borderRadius: '0.5rem', border: '1px solid #E5E7EB', margin: '0 auto', whiteSpace: 'nowrap' }}>
                                 <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem' }}>MARCH</span>
-                                <span style={{ background: '#E11D48', color: '#fff', padding: '0.2rem 0.5rem', borderRadius: '0.20rem', fontWeight: 725, fontSize: '0.80rem', lineHeight: 1 }}>06 & 07</span>
+                                <span style={{ background: '#E11D48', color: '#fff', padding: '0.2rem 0.5rem', borderRadius: '0.25rem', fontWeight: 800, fontSize: '0.85rem', lineHeight: 1 }}>06 & 07</span>
                                 <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem' }}>2026</span>
                             </div>
                         </div>
