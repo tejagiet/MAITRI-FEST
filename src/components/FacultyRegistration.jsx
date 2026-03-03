@@ -440,7 +440,7 @@ export default function FacultyRegistration() {
                             <h3 style={{ color: '#ffffff', fontSize: '1.4rem', fontWeight: 800, margin: '0 0 0.5rem', position: 'relative', zIndex: 1 }}>
                                 {formData.name.toUpperCase()}
                             </h3>
-                            <p style={{ color: '#94A3B8', fontSize: '0.85rem', fontWeight: 500, margin: '0 0 2rem', position: 'relative', zIndex: 1 }}>
+                            <p style={{ color: '#94A3B8', fontSize: '0.85rem', fontWeight: 500, margin: '0 0 0.2rem', position: 'relative', zIndex: 1 }}>
                                 GGU Academic Staff
                             </p>
 
@@ -505,4 +505,5 @@ export default function FacultyRegistration() {
         </div>
     )
 }
+
 
