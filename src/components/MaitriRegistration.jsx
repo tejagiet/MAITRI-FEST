@@ -71,17 +71,8 @@ export default function MaitriRegistration() {
         const e = {}
         if (!formData.name.trim()) e.name = 'Full name is required'
         if (!formData.pin.trim()) e.pin = 'PIN number is required'
-        else {
-            const trimmedPin = formData.pin.trim().toUpperCase();
-            if (!/^[A-Z0-9\-]{5,20}$/.test(trimmedPin)) {
-                e.pin = 'PIN must be 5–20 alphanumeric characters or hyphens'
-            } else if (formData.college === 'giet_polytechnic') {
-                const purePin = trimmedPin.replace(/-/g, '');
-                if (!purePin.startsWith('23295') && !purePin.startsWith('24295') && !purePin.startsWith('25295')) {
-                    e.pin = 'Polytechnic PIN must start with 23295, 24295, or 25295'
-                }
-            }
-        }
+        else if (!/^[A-Z0-9a-z\-]{5,20}$/.test(formData.pin.trim()))
+            e.pin = 'PIN must be 5–20 alphanumeric characters or hyphens'
         if (!formData.mobile.trim()) e.mobile = 'Mobile number is required'
         else if (!/^[6-9]\d{9}$/.test(formData.mobile.trim()))
             e.mobile = 'Enter a valid 10-digit Indian mobile number'
@@ -399,7 +390,7 @@ export default function MaitriRegistration() {
                                     Registering…
                                 </>
                             ) : (
-                                'Register & Get Pass'
+                                ' Register & Get Pass'
                             )}
                         </button>
                     </form>
@@ -424,7 +415,7 @@ export default function MaitriRegistration() {
                     </div>
 
                     <h2 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem' }}>
-                        Registration Successful!
+                        Registration Successful! 
                     </h2>
                     <p style={{ color: 'rgba(255,255,255,0.55)', marginBottom: '1.75rem' }}>
                         Your Entry Pass for Maitri 2026 is ready
@@ -460,16 +451,14 @@ export default function MaitriRegistration() {
                             <p style={{ color: '#4B5563', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', margin: '0 0 0.5rem' }}>
                                 Godavari Global University
                             </p>
-                            <p style={{ color: '#6B7280', fontSize: '0.75rem', fontStyle: 'italic', margin: '0 0 0.75rem', wordSpacing: '0.15rem' }}>
+                            <p style={{ color: '#6B7280', fontSize: '0.75rem', fontStyle: 'italic', margin: '0 0 0.75rem' }}>
                                 An Annual Youth Carnival of GGUites
                             </p>
 
-                            <div style={{ textAlign: 'center' }}>
-                                <div style={{ display: 'inline-flex', alignItems: 'baseline', justifyContent: 'center', gap: '0.5rem', background: '#F9FAFB', padding: '0.4rem 0.6rem', borderRadius: '0.5rem', border: '1px solid #E5E7EB', margin: '0 auto', whiteSpace: 'nowrap' }}>
-                                    <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem', lineHeight: '1.2' }}>MARCH</span>
-                                    <span style={{ background: '#E11D48', color: '#fff', padding: '0.2rem 0.6rem', borderRadius: '0.25rem', fontWeight: 800, fontSize: '0.85rem', lineHeight: '1.2', display: 'inline-block' }}>06 & 07</span>
-                                    <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem', lineHeight: '1.2' }}>2026</span>
-                                </div>
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', background: '#F9FAFB', padding: '0.4rem 0.6rem', borderRadius: '0.5rem', border: '1px solid #E5E7EB', margin: '0 auto', width: 'fit-content' }}>
+                                <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem' }}>MARCH</span>
+                                <span style={{ background: '#E11D48', color: '#fff', padding: '0.2rem 0.5rem', borderRadius: '0.25rem', fontWeight: 800, fontSize: '0.9rem', lineHeight: 1 }}>06 & 07</span>
+                                <span style={{ color: '#1E3A8A', fontWeight: 700, fontSize: '0.8rem' }}>2026</span>
                             </div>
                         </div>
 
@@ -564,7 +553,7 @@ export default function MaitriRegistration() {
                             <p style={{ color: '#1E3A8A', fontSize: '0.75rem', fontWeight: 800, margin: '0 0 0.15rem', letterSpacing: '0.02em' }}>
                                 GODAVARI GLOBAL UNIVERSITY
                             </p>
-                            <p style={{ color: '#6B7280', fontSize: '0.62rem', fontWeight: 500, margin: '0', wordSpacing: '0.1rem' }}>
+                            <p style={{ color: '#6B7280', fontSize: '0.6rem', fontWeight: 500, margin: '0' }}>
                                 Chaitanya Knowledge City, NH-16, Rajamahendravaram
                             </p>
                         </div>
@@ -609,7 +598,7 @@ export default function MaitriRegistration() {
 
             {/* Footer */}
             <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.72rem', marginTop: '2rem', marginBottom: 0, textAlign: 'center' }}>
-                © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College • 24295-AI-038
+                © 2026 Godavari Global University • Maitri Cultural Fest • Developed By TEJA • GIET Polytechnic College
             </p>
 
             {/* Spinner keyframe */}
